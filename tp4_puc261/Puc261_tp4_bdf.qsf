@@ -1,0 +1,89 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2010 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II
+# Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
+# Date created = 20:25:40  July 01, 2026
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		Puc261_tp4_bdf_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone II"
+set_global_assignment -name DEVICE EP2C35F672C6
+set_global_assignment -name TOP_LEVEL_ENTITY puc261_tp4
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "9.1 SP2"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:25:40  JULY 01, 2026"
+set_global_assignment -name LAST_QUARTUS_VERSION "9.1 SP2"
+set_global_assignment -name MIF_FILE Puc261_tp4.mif
+set_global_assignment -name QIP_FILE rom_puc261.qip
+set_global_assignment -name QIP_FILE rom_1024x16.qip
+set_global_assignment -name SIMULATION_MODE FUNCTIONAL
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
+set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
+set_global_assignment -name VECTOR_WAVEFORM_FILE Puc261_tp4.vwf
+set_global_assignment -name MIF_FILE Teste1.mif
+set_global_assignment -name MIF_FILE Teste2.mif
+set_global_assignment -name MIF_FILE Teste3.mif
+set_global_assignment -name MIF_FILE Testefinal.mif
+set_global_assignment -name VECTOR_WAVEFORM_FILE Puc261_tp4_teste2.vwf
+set_global_assignment -name VECTOR_WAVEFORM_FILE Puc261_tp4_teste3.vwf
+set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE Puc261_tp4_teste3.vwf
+set_global_assignment -name BDF_FILE Puc261_tp4_teste.bdf
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 672
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 6
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_N2 -to clk
+set_location_assignment PIN_W26 -to nrst
+set_location_assignment PIN_AE23 -to port_a[0]
+set_location_assignment PIN_AF23 -to port_a[1]
+set_location_assignment PIN_AB21 -to port_a[2]
+set_location_assignment PIN_AC22 -to port_a[3]
+set_location_assignment PIN_AD22 -to port_a[4]
+set_location_assignment PIN_AD23 -to port_a[5]
+set_location_assignment PIN_AD21 -to port_a[6]
+set_location_assignment PIN_AC21 -to port_a[7]
+set_location_assignment PIN_G26 -to port_b[0]
+set_location_assignment PIN_N23 -to port_b[1]
+set_location_assignment PIN_P23 -to port_b[2]
+set_location_assignment PIN_T7 -to port_b[3]
+set_location_assignment PIN_U3 -to port_b[4]
+set_location_assignment PIN_U4 -to port_b[5]
+set_location_assignment PIN_V1 -to port_b[6]
+set_location_assignment PIN_V2 -to port_b[7]
+set_global_assignment -name MISC_FILE "C:/Users/1454251/Desktop/tp4_puc261/Puc261_tp4_bdf.dpf"
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

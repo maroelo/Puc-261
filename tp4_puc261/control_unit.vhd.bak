@@ -1,0 +1,146 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY control_unit IS
+    PORT (
+        nrst                  : IN  STD_LOGIC;
+        clk                   : IN  STD_LOGIC;
+        opcode                : IN  STD_LOGIC_VECTOR(15 DOWNTO 8);
+        status_in             : IN  STD_LOGIC_VECTOR(4 DOWNTO 0);
+
+        reg_a_on_dbus         : OUT STD_LOGIC;
+        alu_on_dbus           : OUT STD_LOGIC;
+        alu_bin_sel           : OUT STD_LOGIC;
+        reg_wr_ena            : OUT STD_LOGIC;
+        status_reg_wr_ena     : OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
+        alu_op                : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        stack_push            : OUT STD_LOGIC;
+        stack_pop             : OUT STD_LOGIC;
+        pc_ctrl               : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+        nce_out               : OUT STD_LOGIC;
+        r_nwr                 : OUT STD_LOGIC
+    );
+END ENTITY;
+
+ARCHITECTURE arch OF control_unit IS
+    TYPE state_type IS (exec_state, wait_fetch_state);
+    SIGNAL pres_state : state_type;
+    SIGNAL next_state : state_type;
+BEGIN
+
+    PROCESS(nrst, clk)
+    BEGIN
+        IF nrst = '0' THEN
+            pres_state <= wait_fetch_state;
+        ELSIF RISING_EDGE(clk) THEN
+            pres_state <= next_state;
+        END IF;
+    END PROCESS;
+
+    PROCESS(pres_state, opcode, status_in)
+        VARIABLE branch_ok : STD_LOGIC;
+        VARIABLE cls       : STD_LOGIC_VECTOR(1 DOWNTO 0);
+        VARIABLE op3       : STD_LOGIC_VECTOR(2 DOWNTO 0);
+        VARIABLE op4       : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    BEGIN
+        cls := opcode(15 DOWNTO 14);
+        op3 := opcode(13 DOWNTO 11);
+        op4 := opcode(13 DOWNTO 10);
+
+        branch_ok             := '0';
+        next_state            <= exec_state;
+
+        reg_a_on_dbus         <= '0';
+        alu_on_dbus           <= '0';
+        alu_bin_sel           <= '0';
+        reg_wr_ena            <= '0';
+        status_reg_wr_ena     <= "00000";
+        alu_op                <= "0000";
+        stack_push            <= '0';
+        stack_pop             <= '0';
+        pc_ctrl               <= "01";   
+        nce_out               <= '1';      
+        r_nwr                 <= '1';      
+
+        IF pres_state = wait_fetch_state THEN
+--            pc_ctrl    <= "00";		-- Original
+            pc_ctrl    <= "01";			-- Mod. FGarcia 03/07/26
+            next_state <= exec_state;
+        ELSE
+            CASE cls IS
+      
+                WHEN "00" =>
+                    alu_op       <= '0' & op3;
+                    alu_bin_sel  <= opcode(8);
+                    alu_on_dbus  <= '1';
+                    reg_wr_ena   <= '1';
+
+                    IF opcode(13) = '0' THEN
+                        status_reg_wr_ena <= "11111";
+                    ELSE
+                        status_reg_wr_ena <= "00100";
+                    END IF;
+
+                WHEN "01" =>
+                    alu_op       <= '1' & op3;
+                    alu_on_dbus  <= '1';
+                    reg_wr_ena   <= '1';
+
+                    IF op3 = "111" THEN
+                        status_reg_wr_ena <= "00100";
+                    ELSE
+                        status_reg_wr_ena <= "00101";
+                    END IF;
+
+
+                WHEN "10" =>
+                    nce_out <= '0';
+
+                    IF opcode(11) = '0' THEN
+                        r_nwr      <= '1';
+                        reg_wr_ena <= '1';
+                    ELSE
+                        r_nwr         <= '0';
+                        reg_a_on_dbus <= '1';
+                    END IF;
+
+    
+                WHEN "11" =>
+                    CASE op4 IS
+                        WHEN "0000" => branch_ok := '1';          
+                        WHEN "0001" => branch_ok := status_in(0); 
+                        WHEN "0010" => branch_ok := status_in(1); 
+                        WHEN "0011" => branch_ok := status_in(2);
+                        WHEN "0100" => branch_ok := status_in(3); 
+                        WHEN "0101" => branch_ok := status_in(4); 
+                        WHEN OTHERS => branch_ok := '0';
+                    END CASE;
+
+                    IF op4 = "1000" THEN
+                        pc_ctrl    <= "10";
+                        stack_push <= '1';
+                        next_state <= wait_fetch_state;
+                    ELSIF op4 = "1110" THEN
+                        pc_ctrl    <= "11";
+                        stack_pop  <= '1';
+                        next_state <= wait_fetch_state;
+                    ELSIF (op4 = "0000") OR (op4 = "0001") OR (op4 = "0010") OR
+                          (op4 = "0011") OR (op4 = "0100") OR (op4 = "0101") THEN
+                        IF branch_ok = '1' THEN
+                            pc_ctrl <= "10";]
+                            next_state <= wait_fetch_state;
+                        ELSE
+                            pc_ctrl <= "01";
+                        END IF;
+                        
+                    ELSE
+                        pc_ctrl <= "01";
+                    END IF;
+
+                WHEN OTHERS =>
+                    pc_ctrl <= "01";
+            END CASE;
+        END IF;
+    END PROCESS;
+
+END arch;

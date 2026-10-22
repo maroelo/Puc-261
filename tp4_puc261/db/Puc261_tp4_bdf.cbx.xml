@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<LOG_ROOT>
+	<PROJECT NAME="Puc261_tp4_bdf">
+		<CBX_INST_ENTRY INSTANCE_NAME="|puc261_tp4|ALU:inst|lpm_add_sub:Add4" CBX_FILE_NAME="add_sub_npi.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|puc261_tp4|BUSMUX:inst10|lpm_mux:$00000" CBX_FILE_NAME="mux_smc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|puc261_tp4|rom_1024x16:inst9|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_g671.tdf"/>
+	</PROJECT>
+</LOG_ROOT>
